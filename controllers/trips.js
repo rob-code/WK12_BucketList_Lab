@@ -19,10 +19,17 @@ tripsRouter.get('/:id', function(req,res){
   })
 })
 
-
-
-
 //TRIP UPDATE BY ID
+tripsRouter.put('/:id', function(req,res){
+  
+  console.log("req.params.id : " + req.params.id)
+  console.log("this is the countryname body " + req.body) // is what would come from a form
+  tripsQuery.update(req.params.id, req.body, function(docs){
+    res.json(docs);
+  })
+})
+
+
 
 //CREATE NEW TRIP
 
