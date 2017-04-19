@@ -7,33 +7,33 @@ var TripsQuery = function(collectionName){
 }
 
 TripsQuery.prototype = {
-    all: function(onQueryFinished){
-      MongoClient.connect(this.url, function(err, db){
+  all: function(onQueryFinished){
+    MongoClient.connect(this.url, function(err, db){
 
-        if (db){
-          var collection = db.collection(this.collectionName);
-          collection.find().toArray(function(err, docs){
-            console.log(docs)
-            onQueryFinished(docs);
-          })
-        }
-      }.bind(this))
-    },
+      if (db){
+        var collection = db.collection(this.collectionName);
+        collection.find().toArray(function(err, docs){
+          console.log(docs)
+          onQueryFinished(docs);
+        })
+      }
+    }.bind(this))
+  },
 
-    update: function(id, newData, onQueryFinished){
-      MongoClient.connect(this.url, function(err, db){
+  update: function(id, newData, onQueryFinished){
+    MongoClient.connect(this.url, function(err, db){
 
-        if (db){
-          var collection = db.collection(this.collectionName);
-          
-          console.log("The index is:  " + id)     
-          collection.updateOne({ _id:ObjectID(id) }, { $set: newData } );
-          collection.find().toArray(function(err, docs){
-            onQueryFinished(docs);
-          })
-        }
-      }.bind(this))
-    },
+      if (db){
+        var collection = db.collection(this.collectionName);
+        
+        console.log("The index is:  " + id)     
+        collection.updateOne({ _id:ObjectID(id) }, { $set: newData } );
+        collection.find().toArray(function(err, docs){
+          onQueryFinished(docs);
+        })
+      }
+    }.bind(this))
+  },
 
   add: function(newTrip, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
@@ -60,25 +60,7 @@ TripsQuery.prototype = {
         })
       }
     }.bind(this))
-  },
-
-  // update: function(id, onQueryFinished){
-  //   MongoClient.connect(this.url, newData, function(err, db){
-
-  //     if (db){
-  //       var collection = db.collection(this.collectionName);
-        
-  //       console.log("The index is:  " + id)     
-  //       collection.updateOne({ _id:ObjectID(id) }, { $set: newData } );
-  //       collection.find().toArray(function(err, docs){
-  //         onQueryFinished(docs);
-  //       })
-  //     }
-  //   }.bind(this))
-  // }
-
-
-
+  }
 
 }
 

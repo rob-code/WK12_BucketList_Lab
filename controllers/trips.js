@@ -32,34 +32,32 @@ tripsRouter.put('/:id', function(req,res){
 //CREATE NEW TRIP
 tripsRouter.post('/', function(req, res){
 
-console.log("Hello" + req.body)
+  console.log("Hello" + req.body)
 
-var newTrip = {
+  var newTrip = {
     country: req.body.country,
     visitByDate: req.body.visitByDate,
     places: [
-      {location: req.body.location,
+    {location: req.body.location,
       landmarks: [req.body.landmarks],
       lat: req.body.lat,
       lng: req.body.lng}
-    ]
-  }
+      ]
+    }
 
-  tripsQuery.add(newTrip, function(docs){
-    res.json(docs)
+    tripsQuery.add(newTrip, function(docs){
+      res.json(docs)
+    })
+
   })
-
-})
 
 //DELETE TRIP BY ID 
 tripsRouter.delete('/:id', function(req,res){
   
-  console.log(req.params.id)
-
   tripsQuery.delete(req.params.id, function(docs){
     res.json(docs);
   })
-  })
+})
 
 
 
