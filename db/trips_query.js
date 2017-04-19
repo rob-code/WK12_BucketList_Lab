@@ -47,20 +47,20 @@ TripsQuery.prototype = {
     }.bind(this));
   },
 
-  // delete: function(id, onQueryFinished){
-  //   MongoClient.connect(this.url, function(err, db){
+  delete: function(id, onQueryFinished){
+    MongoClient.connect(this.url, function(err, db){
 
-  //     if (db){
-  //       var collection = db.collection(this.collectionName);
+      if (db){
+        var collection = db.collection(this.collectionName);
         
-  //       console.log("The index is:  " + id)     
-  //       collection.remove({ _id:ObjectID(id) } )
-  //       collection.find().toArray(function(err, docs){
-  //         onQueryFinished(docs);
-  //       })
-  //     }
-  //   }.bind(this))
-  // },
+        console.log("The index is:  " + id)     
+        collection.remove({ _id:ObjectID(id) } )
+        collection.find().toArray(function(err, docs){
+          onQueryFinished(docs);
+        })
+      }
+    }.bind(this))
+  },
 
   // update: function(id, onQueryFinished){
   //   MongoClient.connect(this.url, newData, function(err, db){

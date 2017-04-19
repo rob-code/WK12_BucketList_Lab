@@ -30,7 +30,6 @@ tripsRouter.put('/:id', function(req,res){
 })
 
 //CREATE NEW TRIP
-
 tripsRouter.post('/', function(req, res){
 
 console.log("Hello" + req.body)
@@ -45,7 +44,7 @@ var newTrip = {
       lng: req.body.lng}
     ]
   }
-  
+
   tripsQuery.add(newTrip, function(docs){
     res.json(docs)
   })
@@ -53,5 +52,15 @@ var newTrip = {
 })
 
 //DELETE TRIP BY ID 
+tripsRouter.delete('/:id', function(req,res){
+  
+  console.log(req.params.id)
+
+  tripsQuery.delete(req.params.id, function(docs){
+    res.json(docs);
+  })
+  })
+
+
 
 module.exports = tripsRouter
