@@ -29,9 +29,28 @@ tripsRouter.put('/:id', function(req,res){
   })
 })
 
-
-
 //CREATE NEW TRIP
+
+tripsRouter.post('/', function(req, res){
+
+console.log("Hello" + req.body)
+
+var newTrip = {
+    country: req.body.country,
+    visitByDate: req.body.visitByDate,
+    places: [
+      {location: req.body.location,
+      landmarks: [req.body.landmarks],
+      lat: req.body.lat,
+      lng: req.body.lng}
+    ]
+  }
+  
+  tripsQuery.add(newTrip, function(docs){
+    res.json(docs)
+  })
+
+})
 
 //DELETE TRIP BY ID 
 

@@ -33,29 +33,19 @@ TripsQuery.prototype = {
           })
         }
       }.bind(this))
-    }
+    },
 
-
-
-
-
-
-
-
-
-
-  // //writing data to the db
-  // add: function(yachtToAdd, onQueryFinished){
-  //   MongoClient.connect(this.url, function(err, db){
-  //     if(db){
-  //       var collection = db.collection(this.collectionName);
-  //       collection.insert(yachtToAdd);
-  //       collection.find().toArray(function(err,docs){
-  //         onQueryFinished(docs);
-  //       })
-  //     }
-  //   }.bind(this));
-  // },
+  add: function(newTrip, onQueryFinished){
+    MongoClient.connect(this.url, function(err, db){
+      if(db){
+        var collection = db.collection(this.collectionName);
+        collection.insert(newTrip);
+        collection.find().toArray(function(err,docs){
+          onQueryFinished(docs);
+        })
+      }
+    }.bind(this));
+  },
 
   // delete: function(id, onQueryFinished){
   //   MongoClient.connect(this.url, function(err, db){
