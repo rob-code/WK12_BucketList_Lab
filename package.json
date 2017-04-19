@@ -1,0 +1,25 @@
+{
+  "name": "bucket_list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "seeds.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rob-code/WK12_BucketList_Lab.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rob-code/WK12_BucketList_Lab/issues"
+  },
+  "homepage": "https://github.com/rob-code/WK12_BucketList_Lab#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongodb": "^2.2.26"
+  }
+}
