@@ -5,7 +5,7 @@ var TripsQuery = require('../db/trips_query')
 var tripsQuery = new TripsQuery('trips')
 
 
-//INDEX
+//SHOW ALL
 tripsRouter.get('/', function(req, res){
   tripsQuery.all(function(docs){
     res.json(docs)
@@ -19,11 +19,8 @@ tripsRouter.get('/:id', function(req,res){
   })
 })
 
-//TRIP UPDATE BY ID
+//UPDATE TRIP BY ID
 tripsRouter.put('/:id', function(req,res){
-  
-  console.log("req.params.id : " + req.params.id)
-  console.log("this is the countryname body " + req.body) // is what would come from a form
   tripsQuery.update(req.params.id, req.body, function(docs){
     res.json(docs);
   })
@@ -32,18 +29,21 @@ tripsRouter.put('/:id', function(req,res){
 //CREATE NEW TRIP
 tripsRouter.post('/', function(req, res){
 
-  console.log("Hello" + req.body)
-
   var newTrip = {
     country: req.body.country,
     visitByDate: req.body.visitByDate,
     places: [
-    {location: req.body.location,
-      landmarks: [req.body.landmarks],
-      lat: req.body.lat,
-      lng: req.body.lng}
+    {location: req.body.places[0].location,
+      landmarks: req.body.places[0].landmarks[0],
+      lat: req.body.places[0].lat,
+      lng: req.body.places[0].lng}
       ]
     }
+
+console.log(newTrip)
+
+
+
 
     tripsQuery.add(newTrip, function(docs){
       res.json(docs)
@@ -58,7 +58,5 @@ tripsRouter.delete('/:id', function(req,res){
     res.json(docs);
   })
 })
-
-
 
 module.exports = tripsRouter

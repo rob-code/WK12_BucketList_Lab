@@ -1,0 +1,17 @@
+* {
+  font-family: Helvetica;
+}
+
+select#countries-select {
+padding-top: 30px;
+padding-bottom: 30px;
+margin: auto;
+display: block;
+}
+
+.welcome-title{
+padding-top: 30px;
+padding-bottom: 30px;
+text-align: center;
+
+}

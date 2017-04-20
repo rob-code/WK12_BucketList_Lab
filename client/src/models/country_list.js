@@ -1,7 +1,6 @@
 var CountryList = function(url){
   this.url = url
   this.countries = []
-  console.log('created')
 }
 
 CountryList.prototype = {

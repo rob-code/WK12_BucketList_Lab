@@ -7,13 +7,14 @@ var TripsQuery = function(collectionName){
 }
 
 TripsQuery.prototype = {
+
   all: function(onQueryFinished){
+  
     MongoClient.connect(this.url, function(err, db){
 
       if (db){
         var collection = db.collection(this.collectionName);
         collection.find().toArray(function(err, docs){
-          console.log(docs)
           onQueryFinished(docs);
         })
       }
@@ -21,12 +22,10 @@ TripsQuery.prototype = {
   },
 
   update: function(id, newData, onQueryFinished){
-    MongoClient.connect(this.url, function(err, db){
 
+    MongoClient.connect(this.url, function(err, db){
       if (db){
-        var collection = db.collection(this.collectionName);
-        
-        console.log("The index is:  " + id)     
+        var collection = db.collection(this.collectionName);  
         collection.updateOne({ _id:ObjectID(id) }, { $set: newData } );
         collection.find().toArray(function(err, docs){
           onQueryFinished(docs);
@@ -36,6 +35,7 @@ TripsQuery.prototype = {
   },
 
   add: function(newTrip, onQueryFinished){
+
     MongoClient.connect(this.url, function(err, db){
       if(db){
         var collection = db.collection(this.collectionName);
@@ -48,13 +48,11 @@ TripsQuery.prototype = {
   },
 
   delete: function(id, onQueryFinished){
-    MongoClient.connect(this.url, function(err, db){
 
+    MongoClient.connect(this.url, function(err, db){
       if (db){
-        var collection = db.collection(this.collectionName);
-        
-        console.log("The index is:  " + id)     
-        collection.remove({ _id:ObjectID(id) } )
+        var collection = db.collection(this.collectionName);   
+        collection.remove( { _id:ObjectID(id) } )
         collection.find().toArray(function(err, docs){
           onQueryFinished(docs);
         })

@@ -63,60 +63,16 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
-
-var CountryList = __webpack_require__(1)
-var CountrySelectView = __webpack_require__(2)
-var TripCreateView = __webpack_require__(3)
-
-app = function(){
-  console.log('running!')
-  var countryList = new CountryList('https://restcountries.eu/rest/v2/all')
-
-  var countrySelect = document.querySelector('#countries-select')
-
-  var tripCreate = document.querySelector('#trip-create-view')
-
-
-  var countrySelectView = new CountrySelectView(countrySelect)
-
-  var tripCreateView = new TripCreateView(tripCreate)
-
-
-
-  countryList.getData(function(countries){
-    countrySelectView.render(countries)
-
-    countrySelectView.selectMenu.addEventListener('change', function(){
-      tripCreateView.render(countries[countrySelectView.selectMenu.value])
-
-    })
-
-
-
-
-  }.bind(this))
-}
-
-
-
-
-
-window.onload = app
-
-/***/ },
-/* 1 */
 /***/ function(module, exports) {
 
 var CountryList = function(url){
   this.url = url
   this.countries = []
-  console.log('created')
 }
 
 CountryList.prototype = {
@@ -138,6 +94,49 @@ CountryList.prototype = {
 }
 
 module.exports = CountryList
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+var DatabaseWorker = function(){
+}
+
+DatabaseWorker.prototype = {
+
+    makePostRequest: function(formContent, callback){
+
+      var request = new XMLHttpRequest();
+      var formData = new FormData();
+
+      formData.append('country', formContent[0].value)
+      formData.append('visitByDate', formContent[5].value)
+      formData.append('location', formContent[1].value)
+      formData.append('landmarks', formContent[4].value)
+      formData.append('lat', formContent[2].value)
+      formData.append('lng', formContent[3].value)
+
+    request.open("POST", "http://localhost:3000/api/trips/");
+    request.setRequestHeader('Content-Type', 'application/json')
+    request.onload = function(){
+      if (this.status !== 200) return;
+      var jsonString = this.responseText;
+      var results = JSON.parse(jsonString);
+      callback(results);
+    };
+    request.send(JSON.stringify(formData));
+  }
+
+}
+
+module.exports = DatabaseWorker;
+
+
+
+
+
+
+
 
 /***/ },
 /* 2 */
@@ -167,57 +166,81 @@ module.exports = CountrySelectView
 /* 3 */
 /***/ function(module, exports) {
 
-var TripCreateView = function(tripCreateElement){
+var TripCreateView = function(tripCreateElement, tripCreateButton){
 
 this.tripCreateElement = tripCreateElement;
-
+this.tripCreateButton = tripCreateButton;
 }
-
 
 TripCreateView.prototype = {
 
 render: function(country){
   console.log("the country selected is : " + country)
 
+  while (this.tripCreateElement.hasChildNodes()){
+    this.tripCreateElement.removeChild(this.tripCreateElement.lastChild)
+  }
+
+  while (this.tripCreateButton.hasChildNodes()){
+    this.tripCreateButton.removeChild(this.tripCreateButton.lastChild)
+  }
+
+  var title = document.createElement('div')
+  title.innerHTML = "Please choose your landmark and the date you wish to visit."
+  title.className = "welcome-title"
+
+
   var form = document.createElement('form')
+  form.id = "tripForm"
+  // form.addEventListener('submit', function(e){
+  //   e.preventDefault();
+  // })
 
   var countryInput = document.createElement('input')
+  countryInput.id = "country"
   countryInput.value = country.name
-  countryInput.label = "country"
 
   var countryLabel = document.createElement('Label')
-  countryLabel.innerHTML = "country: " 
+  countryLabel.innerHTML = "Country: " 
 
   var capitalInput = document.createElement('input')
+  capitalInput.id = "location"
   capitalInput.value = country.capital
 
   var capitalLabel = document.createElement('Label')
-  capitalLabel.innerHTML = "capital city: " 
-
+  capitalLabel.innerHTML = "Capital City: " 
 
   var latInput = document.createElement('input')   
+  latInput.id = "latitude"
   latInput.value = country.latlng[0]
 
   var latLabel = document.createElement('Label')
   latLabel.innerHTML = "Latitude: " 
 
   var lngInput = document.createElement('input')
+  lngInput.id = "longitude"
   lngInput.value = country.latlng[1]
 
   var lngLabel = document.createElement('Label')
   lngLabel.innerHTML = "Longitude: " 
 
-
   var landmarkInput = document.createElement('input')
+  landmarkInput.id = "landmark"
 
   var landmarkLabel = document.createElement('Label')
   landmarkLabel.innerHTML = "Landmark: " 
 
-
-  var visitByDateInput = document.createElement('input')  
+  var visitByDateInput = document.createElement('input')
+  visitByDateInput.id = "visit date"  
 
   var visitByDateLabel = document.createElement('Label')
-  visitByDateLabel.innerHTML = "Visit by Date: " 
+  visitByDateLabel.innerHTML = "Visit byDate: " 
+
+  var createButton = document.createElement('button')
+  createButton.innerHTML = "create trip";
+
+
+  form.appendChild(title)
 
   form.appendChild(countryLabel)
   form.appendChild(countryInput)
@@ -237,20 +260,67 @@ render: function(country){
   form.appendChild(visitByDateLabel)
   form.appendChild(visitByDateInput)
   
-
   this.tripCreateElement.appendChild(form) 
-
-
+  this.tripCreateButton.appendChild(createButton)
 }
-
-
-
-
 
 
 }
 
 module.exports = TripCreateView
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+var CountryList = __webpack_require__(0)
+var DatabaseWorker = __webpack_require__(1)
+var CountrySelectView = __webpack_require__(2)
+var TripCreateView = __webpack_require__(3)
+
+app = function(){
+
+  var countryList = new CountryList('https://restcountries.eu/rest/v2/all')
+
+  var countrySelect = document.querySelector('#countries-select')
+
+  var tripCreate = document.querySelector('#trip-create-view')
+  var tripCreateButton = document.querySelector('#trip-create-button')
+
+
+  var countrySelectView = new CountrySelectView(countrySelect)
+
+  var tripCreateView = new TripCreateView(tripCreate, tripCreateButton)
+
+
+  var databaseWorker = new DatabaseWorker();
+
+  countryList.getData(function(countries){
+    countrySelectView.render(countries)
+
+    countrySelectView.selectMenu.addEventListener('change', function(){
+      tripCreateView.render(countries[countrySelectView.selectMenu.value])
+    })
+
+    tripCreateView.tripCreateButton.addEventListener('click', function(){
+      var formContent = document.querySelector('Form');
+      
+      databaseWorker.makePostRequest(formContent.elements, function(results){
+          //console.log(results);
+      })
+
+    }.bind(this))
+
+
+
+  }.bind(this))
+}
+
+
+
+
+
+window.onload = app
 
 /***/ }
 /******/ ]);
