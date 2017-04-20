@@ -1,7 +1,7 @@
-var DatabaseWorker = function(){
+var DatabaseRouter = function(){
 }
 
-DatabaseWorker.prototype = {
+DatabaseRouter.prototype = {
 
     makePostRequest: function(formContent, callback){
 
@@ -23,12 +23,14 @@ DatabaseWorker.prototype = {
       var results = JSON.parse(jsonString);
       callback(results);
     };
+
     request.send(JSON.stringify(formData));
+  
   }
 
 }
 
-module.exports = DatabaseWorker;
+module.exports = DatabaseRouter;
 
 
 

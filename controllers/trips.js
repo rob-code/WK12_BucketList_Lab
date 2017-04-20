@@ -40,6 +40,22 @@ tripsRouter.post('/', function(req, res){
       ]
     }
 
+  // var newTrip =  {
+  //   "_id": "58f74649574cdb18550a6e3f",
+  //   "country": "Cambodia",
+  //   "visitByDate": "19/05/2017",
+  //   "places": [
+  //   {
+  //   "location": "Hanoi",
+  //   "landmarks": [],
+  //   "lat": 21.028511,
+  //   "lng": 105.804817
+  //   }
+  //   ]
+  //   }
+
+
+
 console.log(newTrip)
 
 

@@ -1,5 +1,5 @@
 var CountryList = require('./models/country_list.js')
-var DatabaseWorker = require('./models/save_trip_to_database.js')
+var DatabaseRouter = require('./controllers/database_router.js')
 var CountrySelectView = require('./views/country_select_view.js')
 var TripCreateView = require('./views/trip_create_view.js')
 
@@ -18,7 +18,7 @@ app = function(){
   var tripCreateView = new TripCreateView(tripCreate, tripCreateButton)
 
 
-  var databaseWorker = new DatabaseWorker();
+  var databaseRouter = new DatabaseRouter();
 
   countryList.getData(function(countries){
     countrySelectView.render(countries)
@@ -30,8 +30,8 @@ app = function(){
     tripCreateView.tripCreateButton.addEventListener('click', function(){
       var formContent = document.querySelector('Form');
       
-      databaseWorker.makePostRequest(formContent.elements, function(results){
-          //console.log(results);
+      databaseRouter.makePostRequest(formContent.elements, function(results){
+          console.log(results);
       })
 
     }.bind(this))

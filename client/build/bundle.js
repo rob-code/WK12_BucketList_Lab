@@ -70,6 +70,51 @@
 /* 0 */
 /***/ function(module, exports) {
 
+var DatabaseRouter = function(){
+}
+
+DatabaseRouter.prototype = {
+
+    makePostRequest: function(formContent, callback){
+
+      var request = new XMLHttpRequest();
+      var formData = new FormData();
+
+      formData.append('country', formContent[0].value)
+      formData.append('visitByDate', formContent[5].value)
+      formData.append('location', formContent[1].value)
+      formData.append('landmarks', formContent[4].value)
+      formData.append('lat', formContent[2].value)
+      formData.append('lng', formContent[3].value)
+
+    request.open("POST", "http://localhost:3000/api/trips/");
+    request.setRequestHeader('Content-Type', 'application/json')
+    request.onload = function(){
+      if (this.status !== 200) return;
+      var jsonString = this.responseText;
+      var results = JSON.parse(jsonString);
+      callback(results);
+    };
+
+    request.send(JSON.stringify(formData));
+  
+  }
+
+}
+
+module.exports = DatabaseRouter;
+
+
+
+
+
+
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
 var CountryList = function(url){
   this.url = url
   this.countries = []
@@ -94,49 +139,6 @@ CountryList.prototype = {
 }
 
 module.exports = CountryList
-
-/***/ },
-/* 1 */
-/***/ function(module, exports) {
-
-var DatabaseWorker = function(){
-}
-
-DatabaseWorker.prototype = {
-
-    makePostRequest: function(formContent, callback){
-
-      var request = new XMLHttpRequest();
-      var formData = new FormData();
-
-      formData.append('country', formContent[0].value)
-      formData.append('visitByDate', formContent[5].value)
-      formData.append('location', formContent[1].value)
-      formData.append('landmarks', formContent[4].value)
-      formData.append('lat', formContent[2].value)
-      formData.append('lng', formContent[3].value)
-
-    request.open("POST", "http://localhost:3000/api/trips/");
-    request.setRequestHeader('Content-Type', 'application/json')
-    request.onload = function(){
-      if (this.status !== 200) return;
-      var jsonString = this.responseText;
-      var results = JSON.parse(jsonString);
-      callback(results);
-    };
-    request.send(JSON.stringify(formData));
-  }
-
-}
-
-module.exports = DatabaseWorker;
-
-
-
-
-
-
-
 
 /***/ },
 /* 2 */
@@ -273,8 +275,8 @@ module.exports = TripCreateView
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-var CountryList = __webpack_require__(0)
-var DatabaseWorker = __webpack_require__(1)
+var CountryList = __webpack_require__(1)
+var DatabaseRouter = __webpack_require__(0)
 var CountrySelectView = __webpack_require__(2)
 var TripCreateView = __webpack_require__(3)
 
@@ -293,7 +295,7 @@ app = function(){
   var tripCreateView = new TripCreateView(tripCreate, tripCreateButton)
 
 
-  var databaseWorker = new DatabaseWorker();
+  var databaseRouter = new DatabaseRouter();
 
   countryList.getData(function(countries){
     countrySelectView.render(countries)
@@ -305,8 +307,8 @@ app = function(){
     tripCreateView.tripCreateButton.addEventListener('click', function(){
       var formContent = document.querySelector('Form');
       
-      databaseWorker.makePostRequest(formContent.elements, function(results){
-          //console.log(results);
+      databaseRouter.makePostRequest(formContent.elements, function(results){
+          console.log(results);
       })
 
     }.bind(this))
