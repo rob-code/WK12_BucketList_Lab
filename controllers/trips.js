@@ -29,39 +29,10 @@ tripsRouter.put('/:id', function(req,res){
 //CREATE NEW TRIP
 tripsRouter.post('/', function(req, res){
 
-  var newTrip = {
-    country: req.body.country,
-    visitByDate: req.body.visitByDate,
-    places: [
-    {location: req.body.places[0].location,
-      landmarks: req.body.places[0].landmarks[0],
-      lat: req.body.places[0].lat,
-      lng: req.body.places[0].lng}
-      ]
-    }
+  console.log("req.body")  
+  console.log(req.body)  
 
-  // var newTrip =  {
-  //   "_id": "58f74649574cdb18550a6e3f",
-  //   "country": "Cambodia",
-  //   "visitByDate": "19/05/2017",
-  //   "places": [
-  //   {
-  //   "location": "Hanoi",
-  //   "landmarks": [],
-  //   "lat": 21.028511,
-  //   "lng": 105.804817
-  //   }
-  //   ]
-  //   }
-
-
-
-console.log(newTrip)
-
-
-
-
-    tripsQuery.add(newTrip, function(docs){
+    tripsQuery.add(req.body, function(docs){
       res.json(docs)
     })
 

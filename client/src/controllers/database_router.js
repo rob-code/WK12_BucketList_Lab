@@ -8,14 +8,18 @@ DatabaseRouter.prototype = {
       var request = new XMLHttpRequest();
       var formData = new FormData();
 
-      formData.append('country', formContent[0].value)
-      formData.append('visitByDate', formContent[5].value)
-      formData.append('location', formContent[1].value)
-      formData.append('landmarks', formContent[4].value)
-      formData.append('lat', formContent[2].value)
-      formData.append('lng', formContent[3].value)
+      var newTrip = {
+        "country": formContent[0].value,
+        "visitByDate": formContent[5].value,
+        "places": [
+        {"location": formContent[1].value,
+          "landmarks": [ formContent[4].value ],
+          "lat": formContent[2].value,
+          "lng": formContent[3].value}
+          ]
+        }      
 
-    request.open("POST", "http://localhost:3000/api/trips/");
+    request.open("POST", "http://localhost:3000/api/trips/", true);
     request.setRequestHeader('Content-Type', 'application/json')
     request.onload = function(){
       if (this.status !== 200) return;
@@ -24,8 +28,8 @@ DatabaseRouter.prototype = {
       callback(results);
     };
 
-    request.send(JSON.stringify(formData));
-  
+    request.send(JSON.stringify(newTrip));
+
   }
 
 }
