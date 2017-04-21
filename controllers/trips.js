@@ -29,9 +29,6 @@ tripsRouter.put('/:id', function(req,res){
 //CREATE NEW TRIP
 tripsRouter.post('/', function(req, res){
 
-  console.log("req.body")  
-  console.log(req.body)  
-
     tripsQuery.add(req.body, function(docs){
       res.json(docs)
     })
